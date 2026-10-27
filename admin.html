@@ -41,7 +41,8 @@ header.bar button{width:auto;background:#3b2818;padding:10px 20px;font-size:14px
 .order-card{ background:rgba(255,255,255,0.97); border-radius:20px; border:1px solid rgba(212,169,74,0.2); margin-bottom:20px; overflow:hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition:.2s; }
 .order-card:hover{box-shadow: 0 15px 40px rgba(74,46,24,0.1)}
 .order-header{background:#f9f3e6;padding:16px 20px;border-bottom:2px solid #e2d4b7;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-.order-id{font-size:18px;font-weight:900;color:#4a2e18;background:#fff;padding:6px 14px;border-radius:8px;border:1px solid #e2d4b7;font-family:monospace;direction:ltr}
+/* تنسيق رقم الطلب */
+.order-id{font-size:16px;font-weight:900;color:#4a2e18;background:#fff;padding:6px 14px;border-radius:8px;border:1px solid #e2d4b7;display:flex;align-items:center;gap:8px;}
 .order-date{font-size:13px;color:#7a6650;font-weight:700;background:#fff;padding:6px 14px;border-radius:8px;border:1px solid #e2d4b7}
 .order-body{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
 @media(max-width:768px){.order-body{grid-template-columns:1fr}}
@@ -316,7 +317,7 @@ function renderList() {
 
   if (rows.length === 0) {
     $("#list").className = "empty";
-    $("#list").textContent = "لا توجد طلبات ";
+    $("#list").textContent = "لا توجد طلبات مطابقة";
     return;
   }
   
@@ -341,8 +342,11 @@ function renderList() {
     return `
       <div class="order-card">
         <div class="order-header">
-          <!-- التعديل هنا: آخر 4 حروف -->
-          <div class="order-id">#${o.id.slice(-4).toUpperCase()}</div>
+          <!-- التعديل هنا: عرض رقم الطلب بكلمة "رقم الطلب" وآخر 4 حروف -->
+          <div class="order-id">
+            <span style="font-size:13px; color:#7a6650; font-family:'Tajawal', sans-serif;">رقم الطلب:</span>
+            <span>#${o.id.slice(-4).toUpperCase()}</span>
+          </div>
           <div class="order-date">📅 ${dateStr} — 🕒 ${timeStr}</div>
         </div>
         <div class="order-body">

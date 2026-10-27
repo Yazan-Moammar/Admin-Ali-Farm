@@ -8,106 +8,43 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{
-  font-family:'Tajawal',system-ui,sans-serif;
-  color:#3b2818;
-  line-height:1.6;
-  min-height:100vh;
-  background: linear-gradient(135deg, #fdfaf3 0%, #f9f3e6 100%);
-  padding: 20px;
-}
-
-/* ================= تسجيل الدخول ================= */
+body{ font-family:'Tajawal',system-ui,sans-serif; color:#3b2818; line-height:1.6; min-height:100vh; background: linear-gradient(135deg, #fdfaf3 0%, #f9f3e6 100%); padding: 20px; }
 .login-wrapper { min-height: 85vh; display: flex; align-items: center; justify-content: center; }
-.login{
-  max-width: 420px; width: 100%;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-  padding: 40px 30px; border-radius: 24px;
-  box-shadow: 0 20px 60px rgba(74, 46, 24, 0.15);
-  border: 1px solid rgba(212, 169, 74, 0.2);
-  text-align: center;
-}
+.login{ max-width: 420px; width: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px); padding: 40px 30px; border-radius: 24px; box-shadow: 0 20px 60px rgba(74, 46, 24, 0.15); border: 1px solid rgba(212, 169, 74, 0.2); text-align: center; }
 .login-logo { width: 90px; height: 90px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 8px 20px rgba(74,46,24,0.2); margin: 0 auto 20px; display: block; }
 .login h1{color:#4a2e18;font-size:24px;margin-bottom:6px;font-weight:900}
 .login p{color:#7a6650;font-size:14px;margin-bottom:25px;font-weight:700}
-
-input,select,textarea{
-  width:100%; padding:14px 16px; border:2px solid #e2d4b7;
-  border-radius:14px; font-family:inherit; font-size:15px; background:#fff;
-  color:#3b2818; transition:.2s; margin-bottom:14px;
-}
+input,select,textarea{ width:100%; padding:14px 16px; border:2px solid #e2d4b7; border-radius:14px; font-family:inherit; font-size:15px; background:#fff; color:#3b2818; transition:.2s; margin-bottom:14px; }
 input:focus,select:focus,textarea:focus{outline:none;border-color:#c69232;box-shadow:0 0 0 4px rgba(198,146,50,.15)}
-
-button{
-  padding:14px 20px; border:none; border-radius:14px;
-  background:linear-gradient(135deg, #6b4423 0%, #4a2e18 100%);
-  color:#fff; font-family:inherit; font-size:16px; font-weight:800;
-  cursor:pointer; transition:.2s; box-shadow: 0 4px 15px rgba(74,46,24,0.2);
-}
+button{ padding:14px 20px; border:none; border-radius:14px; background:linear-gradient(135deg, #6b4423 0%, #4a2e18 100%); color:#fff; font-family:inherit; font-size:16px; font-weight:800; cursor:pointer; transition:.2s; box-shadow: 0 4px 15px rgba(74,46,24,0.2); }
 button:hover{opacity:.95; transform:translateY(-2px); box-shadow: 0 6px 20px rgba(74,46,24,0.3)}
 button:disabled{opacity:.6;cursor:not-allowed; transform:none}
 .login button{width:100%; padding:16px; font-size:17px}
-
 .err{color:#dc2626;font-size:14px;margin-top:12px;text-align:center;font-weight:800;display:none;background:#fee2e2;padding:10px;border-radius:10px}
 .err.show{display:block}
 .hidden{display:none!important}
-
-/* ================= لوحة التحكم ================= */
 .app-container { max-width: 1200px; margin: 0 auto; }
-header.bar{
-  display:flex; justify-content:space-between; align-items:center;
-  background:rgba(255,255,255,0.95); backdrop-filter: blur(15px);
-  padding:20px 24px; border-radius:20px; border:1px solid rgba(212,169,74,0.2);
-  margin-bottom:20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-}
+header.bar{ display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.95); padding:20px 24px; border-radius:20px; border:1px solid rgba(212,169,74,0.2); margin-bottom:20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
 header.bar h1{color:#4a2e18;font-size:22px;font-weight:900;display:flex;align-items:center;gap:10px}
 header.bar button{width:auto;background:#3b2818;padding:10px 20px;font-size:14px; box-shadow:none}
-
-.tabs{
-  display:flex; gap:10px; margin-bottom:24px;
-  background:rgba(255,255,255,0.95); backdrop-filter: blur(15px);
-  padding:10px; border-radius:16px; border:1px solid rgba(212,169,74,0.2);
-  box-shadow: 0 5px 20px rgba(0,0,0,0.03);
-}
+.tabs{ display:flex; gap:10px; margin-bottom:24px; background:rgba(255,255,255,0.95); padding:10px; border-radius:16px; border:1px solid rgba(212,169,74,0.2); box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
 .tab-btn{flex:1;padding:14px;background:transparent;color:#7a6650;font-size:16px;font-weight:800;border-radius:12px;box-shadow:none}
 .tab-btn:hover{background:#f9f3e6; transform:none; box-shadow:none}
 .tab-btn.active{background:linear-gradient(135deg, #e0b96a 0%, #c69232 100%);color:#4a2e18;box-shadow: 0 4px 15px rgba(198,146,50,0.3)}
-
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:24px}
-.card{
-  background:rgba(255,255,255,0.95); backdrop-filter: blur(10px);
-  padding:20px; border-radius:16px; border:1px solid rgba(212,169,74,0.2);
-  text-align:center; box-shadow: 0 5px 20px rgba(0,0,0,0.03);
-}
+.card{ background:rgba(255,255,255,0.95); padding:20px; border-radius:16px; border:1px solid rgba(212,169,74,0.2); text-align:center; box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
 .card .n{font-size:28px;font-weight:900;color:#4a2e18}
 .card .l{font-size:13px;color:#7a6650;font-weight:700}
-
-.toolbar{
-  display:flex; gap:12px; margin-bottom:24px; flex-wrap:wrap;
-  background:rgba(255,255,255,0.95); backdrop-filter: blur(10px);
-  padding:16px; border-radius:16px; border:1px solid rgba(212,169,74,0.2);
-  box-shadow: 0 5px 20px rgba(0,0,0,0.03);
-}
+.toolbar{ display:flex; gap:12px; margin-bottom:24px; flex-wrap:wrap; background:rgba(255,255,255,0.95); padding:16px; border-radius:16px; border:1px solid rgba(212,169,74,0.2); box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
 .toolbar input{flex:1;min-width:200px;margin-bottom:0}
 .toolbar select,.toolbar button{width:auto;min-width:130px;margin-bottom:0}
-
-/* ================= الطلبات ================= */
-.order-card{
-  background:rgba(255,255,255,0.97); backdrop-filter: blur(10px);
-  border-radius:20px; border:1px solid rgba(212,169,74,0.2);
-  margin-bottom:20px; overflow:hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition:.2s;
-}
+.order-card{ background:rgba(255,255,255,0.97); border-radius:20px; border:1px solid rgba(212,169,74,0.2); margin-bottom:20px; overflow:hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition:.2s; }
 .order-card:hover{box-shadow: 0 15px 40px rgba(74,46,24,0.1)}
-
 .order-header{background:#f9f3e6;padding:16px 20px;border-bottom:2px solid #e2d4b7;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 .order-id{font-size:18px;font-weight:900;color:#4a2e18;background:#fff;padding:6px 14px;border-radius:8px;border:1px solid #e2d4b7;font-family:monospace;direction:ltr}
 .order-date{font-size:13px;color:#7a6650;font-weight:700;background:#fff;padding:6px 14px;border-radius:8px;border:1px solid #e2d4b7}
-
 .order-body{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
 @media(max-width:768px){.order-body{grid-template-columns:1fr}}
-
 .data-table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e2d4b7}
 .data-table th,.data-table td{padding:12px 14px;text-align:right;border-bottom:1px solid #f0e6d2}
 .data-table th{background:#f9f3e6;color:#7a6650;font-weight:800;font-size:12px;width:35%}
@@ -115,7 +52,6 @@ header.bar button{width:auto;background:#3b2818;padding:10px 20px;font-size:14px
 .data-table tr:last-child th, .data-table tr:last-child td {border-bottom:none}
 .phone-val{direction:ltr;text-align:right;font-family:monospace;color:#2563eb;font-size:15px}
 .total-val{color:#16a34a;font-size:16px;font-weight:900}
-
 .items-box{background:#f9f3e6;border:1px solid #e2d4b7;border-radius:12px;padding:16px;margin-bottom:16px}
 .items-box h4{font-size:14px;color:#6b4423;margin-bottom:12px;font-weight:800;border-bottom:2px dashed #e2d4b7;padding-bottom:8px}
 .item-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0e6d2;font-size:14px}
@@ -123,41 +59,22 @@ header.bar button{width:auto;background:#3b2818;padding:10px 20px;font-size:14px
 .item-name{font-weight:700;color:#3b2818;flex:1}
 .item-qty{background:#e2d4b7;color:#4a2e18;font-size:12px;padding:2px 8px;border-radius:6px;margin:0 10px;font-weight:800}
 .item-price{color:#6b4423;font-weight:900;font-size:14px;min-width:80px;text-align:left;direction:ltr}
-
-/* ================= التحكم في الحالة (الألوان هنا) ================= */
 .status-controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px}
 .status-controls label{font-size:12px;font-weight:800;color:#7a6650;display:block;margin-bottom:6px}
-.status-select{
-  padding:12px; border-radius:10px; border:2px solid transparent;
-  font-size:13px; font-weight:900; font-family:inherit;
-  margin-bottom:0; cursor:pointer; width:100%;
-  transition: all 0.3s;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: left 12px center;
-  background-size: 16px;
-  padding-left: 36px;
-}
-/* ألوان حالة الطلب */
+.status-select{ padding:12px; border-radius:10px; border:2px solid transparent; font-size:13px; font-weight:900; font-family:inherit; margin-bottom:0; cursor:pointer; width:100%; transition: all 0.3s; appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: left 12px center; background-size: 16px; padding-left: 36px; }
 .status-select.s-new { background-color:#dbeafe; color:#1d4ed8; border-color:#bfdbfe; }
 .status-select.s-processing { background-color:#fef3c7; color:#b45309; border-color:#fde68a; }
 .status-select.s-shipped { background-color:#e0e7ff; color:#4338ca; border-color:#c7d2fe; }
 .status-select.s-delivered { background-color:#dcfce7; color:#15803d; border-color:#bbf7d0; }
 .status-select.s-cancelled { background-color:#fee2e2; color:#b91c1c; border-color:#fecaca; }
-
-/* ألوان حالة الدفع */
 .status-select.p-pending { background-color:#fef9c3; color:#a16207; border-color:#fde047; }
 .status-select.p-paid { background-color:#dcfce7; color:#15803d; border-color:#bbf7d0; }
 .status-select.p-rejected { background-color:#fee2e2; color:#b91c1c; border-color:#fecaca; }
-
 .order-footer{padding:16px 20px;background:#f9f3e6;border-top:1px solid #e2d4b7;display:flex;justify-content:flex-end}
 .btn-delete{background:#fff;color:#dc2626;border:1px solid #fecaca;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:800; box-shadow:none}
 .btn-delete:hover{background:#fef2f2;border-color:#fca5a5; transform:none; box-shadow:none}
-
-/* ================= المنتجات ================= */
 .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-.product-card{background:rgba(255,255,255,0.97);backdrop-filter:blur(10px);border-radius:16px;border:1px solid rgba(212,169,74,0.2);overflow:hidden;display:flex;flex-direction:column;box-shadow: 0 10px 30px rgba(0,0,0,0.05)}
+.product-card{background:rgba(255,255,255,0.97);border-radius:16px;border:1px solid rgba(212,169,74,0.2);overflow:hidden;display:flex;flex-direction:column;box-shadow: 0 10px 30px rgba(0,0,0,0.05)}
 .product-img-wrap{width:100%;height:180px;background:#fdfaf3;display:flex;align-items:center;justify-content:center;padding:15px;border-bottom:1px solid #e2d4b7}
 .product-img-wrap img{max-width:100%;max-height:100%;object-fit:contain}
 .product-info{padding:16px;flex:1;display:flex;flex-direction:column}
@@ -169,8 +86,6 @@ header.bar button{width:auto;background:#3b2818;padding:10px 20px;font-size:14px
 .btn-edit:hover{background:#e2d4b7; transform:none; box-shadow:none}
 .btn-delete-prod{flex:1;background:#fff;color:#dc2626;border:1px solid #fecaca;padding:10px;font-size:13px;border-radius:8px;box-shadow:none}
 .btn-delete-prod:hover{background:#fef2f2; transform:none; box-shadow:none}
-
-/* ================= المودال ================= */
 .modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(74,46,24,0.7);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px}
 .modal.open{display:flex}
 .modal-content{background:#fdfaf3;border-radius:20px;width:100%;max-width:500px;padding:24px;max-height:90vh;overflow-y:auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3)}
@@ -182,7 +97,6 @@ header.bar button{width:auto;background:#3b2818;padding:10px 20px;font-size:14px
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .form-actions{display:flex;gap:10px;margin-top:20px}
 .form-actions button{flex:1}
-
 .empty,.loading{text-align:center;color:#7a6650;padding:60px 20px;font-weight:700;background:rgba(255,255,255,0.95);border-radius:20px;border:1px solid rgba(212,169,74,0.2);font-size:16px}
 </style>
 </head>
@@ -293,7 +207,6 @@ const $ = s => document.querySelector(s);
 let allOrders = [];
 let allProducts = [];
 
-// مسح الجلسة القديمة لضمان طلب الدخول دائماً
 localStorage.removeItem("firebase:authUser:" + firebaseConfig.apiKey);
 sessionStorage.removeItem("firebase:authUser:" + firebaseConfig.apiKey);
 if (window.indexedDB) { indexedDB.deleteDatabase("firebaseLocalStorageDb"); }
@@ -355,7 +268,6 @@ window.switchTab = function(tab, el) {
   }
 };
 
-// ================= إدارة الطلبات =================
 async function loadOrders() {
   $("#list").className = "loading";
   $("#list").textContent = "جارٍ التحميل...";
@@ -404,7 +316,7 @@ function renderList() {
 
   if (rows.length === 0) {
     $("#list").className = "empty";
-    $("#list").textContent = "لا توجد طلبات مطابقة";
+    $("#list").textContent = "لا توجد طلبات ";
     return;
   }
   
@@ -420,19 +332,8 @@ function renderList() {
       </div>
     `).join("");
 
-    // الحالات والألوان
-    const orderStatuses = { 
-      new: ["جديد", "s-new"], 
-      processing: ["قيد التجهيز", "s-processing"], 
-      shipped: ["تم الشحن", "s-shipped"], 
-      delivered: ["تم التسليم", "s-delivered"], 
-      cancelled: ["ملغي", "s-cancelled"] 
-    };
-    const paymentStatuses = { 
-      pending: ["بانتظار الدفع", "p-pending"], 
-      paid: ["مدفوع", "p-paid"], 
-      rejected: ["مرفوض", "p-rejected"] 
-    };
+    const orderStatuses = { new: ["جديد", "s-new"], processing: ["قيد التجهيز", "s-processing"], shipped: ["تم الشحن", "s-shipped"], delivered: ["تم التسليم", "s-delivered"], cancelled: ["ملغي", "s-cancelled"] };
+    const paymentStatuses = { pending: ["بانتظار الدفع", "p-pending"], paid: ["مدفوع", "p-paid"], rejected: ["مرفوض", "p-rejected"] };
     
     const currentOrderClass = orderStatuses[o.status] ? orderStatuses[o.status][1] : "s-new";
     const currentPayClass = paymentStatuses[o.paymentStatus] ? paymentStatuses[o.paymentStatus][1] : "p-pending";
@@ -440,7 +341,8 @@ function renderList() {
     return `
       <div class="order-card">
         <div class="order-header">
-          <div class="order-id">#${o.id.slice(0, 8).toUpperCase()}</div>
+          <!-- التعديل هنا: آخر 4 حروف -->
+          <div class="order-id">#${o.id.slice(-4).toUpperCase()}</div>
           <div class="order-date">📅 ${dateStr} — 🕒 ${timeStr}</div>
         </div>
         <div class="order-body">
@@ -493,11 +395,7 @@ function renderList() {
 
 window.updateOrderStatus = async function(id, selectEl) {
   const newStatus = selectEl.value;
-  const colorMap = {
-    new: "s-new", processing: "s-processing", shipped: "s-shipped", delivered: "s-delivered", cancelled: "s-cancelled"
-  };
-  
-  // تغيير اللون فوراً
+  const colorMap = { new: "s-new", processing: "s-processing", shipped: "s-shipped", delivered: "s-delivered", cancelled: "s-cancelled" };
   selectEl.className = "status-select " + colorMap[newStatus];
   
   try {
@@ -512,11 +410,7 @@ window.updateOrderStatus = async function(id, selectEl) {
 
 window.updatePaymentStatus = async function(id, selectEl) {
   const newStatus = selectEl.value;
-  const colorMap = {
-    pending: "p-pending", paid: "p-paid", rejected: "p-rejected"
-  };
-  
-  // تغيير اللون فوراً
+  const colorMap = { pending: "p-pending", paid: "p-paid", rejected: "p-rejected" };
   selectEl.className = "status-select " + colorMap[newStatus];
   
   try {
@@ -544,7 +438,6 @@ $("#search").oninput = renderList;
 $("#filter").onchange = renderList;
 $("#refresh").onclick = loadOrders;
 
-// ================= إدارة المنتجات =================
 async function loadProducts() {
   $("#prodList").className = "loading";
   $("#prodList").textContent = "جارٍ التحميل...";
@@ -663,7 +556,6 @@ window.deleteProduct = async function(id) {
 $("#searchProd").oninput = renderProducts;
 $("#refreshProd").onclick = loadProducts;
 $("#btnAddProd").onclick = openAddModal;
-
 </script>
 </body>
 </html>

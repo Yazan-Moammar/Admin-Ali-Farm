@@ -38,13 +38,19 @@ header.bar button{width:auto;background:#3b2818;padding:10px 20px;font-size:14px
 .toolbar{ display:flex; gap:12px; margin-bottom:24px; flex-wrap:wrap; background:rgba(255,255,255,0.95); padding:16px; border-radius:16px; border:1px solid rgba(212,169,74,0.2); box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
 .toolbar input{flex:1;min-width:200px;margin-bottom:0}
 .toolbar select,.toolbar button{width:auto;min-width:130px;margin-bottom:0}
-.order-card{ background:rgba(255,255,255,0.97); border-radius:20px; border:1px solid rgba(212,169,74,0.2); margin-bottom:20px; overflow:hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition:.2s; }
-.order-card:hover{box-shadow: 0 15px 40px rgba(74,46,24,0.1)}
-.order-header{background:#f9f3e6;padding:16px 20px;border-bottom:2px solid #e2d4b7;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-/* تنسيق رقم الطلب */
+
+/* كروت الطلبات - شكل ولون مختلف عن الخلفية */
+.order-card{ background:#fff; border-radius:20px; border:2px solid #d9c08a; border-right:10px solid #c69232; margin-bottom:24px; overflow:hidden; box-shadow:0 12px 35px rgba(74,46,24,.18); transition:.25s; }
+.order-card:hover{ transform:translateY(-3px); box-shadow:0 18px 45px rgba(74,46,24,.28); }
+.order-card.st-new{border-right-color:#2563eb}
+.order-card.st-processing{border-right-color:#f59e0b}
+.order-card.st-shipped{border-right-color:#6366f1}
+.order-card.st-delivered{border-right-color:#16a34a}
+.order-card.st-cancelled{border-right-color:#dc2626;opacity:.85}
+.order-header{background:linear-gradient(135deg,#4a2e18,#6b4423);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 .order-id{font-size:16px;font-weight:900;color:#4a2e18;background:#fff;padding:6px 14px;border-radius:8px;border:1px solid #e2d4b7;display:flex;align-items:center;gap:8px;}
 .order-date{font-size:13px;color:#7a6650;font-weight:700;background:#fff;padding:6px 14px;border-radius:8px;border:1px solid #e2d4b7}
-.order-body{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.order-body{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:20px;background:#fffdf8}
 @media(max-width:768px){.order-body{grid-template-columns:1fr}}
 .data-table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e2d4b7}
 .data-table th,.data-table td{padding:12px 14px;text-align:right;border-bottom:1px solid #f0e6d2}
@@ -71,9 +77,17 @@ header.bar button{width:auto;background:#3b2818;padding:10px 20px;font-size:14px
 .status-select.p-pending { background-color:#fef9c3; color:#a16207; border-color:#fde047; }
 .status-select.p-paid { background-color:#dcfce7; color:#15803d; border-color:#bbf7d0; }
 .status-select.p-rejected { background-color:#fee2e2; color:#b91c1c; border-color:#fecaca; }
-.order-footer{padding:16px 20px;background:#f9f3e6;border-top:1px solid #e2d4b7;display:flex;justify-content:flex-end}
+.order-footer{padding:16px 20px;background:#f3e9d2;border-top:2px solid #e2d4b7;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .btn-delete{background:#fff;color:#dc2626;border:1px solid #fecaca;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:800; box-shadow:none}
 .btn-delete:hover{background:#fef2f2;border-color:#fca5a5; transform:none; box-shadow:none}
+
+/* الإيصال وزر الواتساب */
+.receipt-box{background:#fff;border:2px dashed #c69232;border-radius:12px;padding:14px;text-align:center}
+.receipt-box h4{font-size:14px;color:#6b4423;margin-bottom:10px;font-weight:800}
+.receipt-thumb{max-width:100%;max-height:200px;border-radius:10px;border:1px solid #e2d4b7;cursor:zoom-in;margin:0 auto}
+.no-receipt{color:#dc2626;font-weight:800;font-size:13px;padding:10px}
+.btn-wa{background:linear-gradient(135deg,#25D366,#128C7E);padding:10px 18px;border-radius:10px;font-size:13px}
+
 .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
 .product-card{background:rgba(255,255,255,0.97);border-radius:16px;border:1px solid rgba(212,169,74,0.2);overflow:hidden;display:flex;flex-direction:column;box-shadow: 0 10px 30px rgba(0,0,0,0.05)}
 .product-img-wrap{width:100%;height:180px;background:#fdfaf3;display:flex;align-items:center;justify-content:center;padding:15px;border-bottom:1px solid #e2d4b7}
@@ -186,6 +200,11 @@ header.bar button{width:auto;background:#3b2818;padding:10px 20px;font-size:14px
   </div>
 </div>
 
+<!-- عرض الإيصال بحجم كبير -->
+<div class="modal" id="receiptModal" onclick="this.classList.remove('open')">
+  <img id="receiptBig" alt="إيصال" style="max-width:100%;max-height:90vh;border-radius:12px;background:#fff">
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -205,6 +224,8 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const $ = s => document.querySelector(s);
+// حماية: تحويل أي نص قادم من الزبائن إلى نص آمن قبل عرضه
+const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 let allOrders = [];
 let allProducts = [];
 
@@ -292,6 +313,7 @@ function renderStats() {
   const total = allOrders.length;
   const nw = allOrders.filter(o => o.status === "new").length;
   const proc = allOrders.filter(o => o.status === "processing").length;
+  const ship = allOrders.filter(o => o.status === "shipped").length;
   const done = allOrders.filter(o => o.status === "delivered").length;
   const canc = allOrders.filter(o => o.status === "cancelled").length;
   const sum = allOrders.filter(o => o.status !== "cancelled").reduce((s, o) => s + (Number(o.total) || 0), 0);
@@ -299,6 +321,7 @@ function renderStats() {
     <div class="card"><div class="n">${total}</div><div class="l">إجمالي الطلبات</div></div>
     <div class="card"><div class="n">${nw}</div><div class="l">جديد</div></div>
     <div class="card"><div class="n">${proc}</div><div class="l">قيد التجهيز</div></div>
+    <div class="card"><div class="n">${ship}</div><div class="l">تم الشحن</div></div>
     <div class="card"><div class="n">${done}</div><div class="l">تم التسليم</div></div>
     <div class="card"><div class="n">${canc}</div><div class="l">ملغي</div></div>
     <div class="card"><div class="n">${sum.toLocaleString("ar-EG")}</div><div class="l">إجمالي المبيعات (جنيه)</div></div>`;
@@ -327,8 +350,8 @@ function renderList() {
     const timeStr = o._date.toLocaleTimeString("ar-EG", { hour: '2-digit', minute: '2-digit' });
     const itemsHtml = (o.items || []).map(i => `
       <div class="item-row">
-        <span class="item-name">${i.name}</span>
-        <span class="item-qty">× ${i.qty}</span>
+        <span class="item-name">${esc(i.name)}</span>
+        <span class="item-qty">× ${esc(i.qty)}</span>
         <span class="item-price">${(i.price * i.qty).toLocaleString("ar-EG")} ج.م</span>
       </div>
     `).join("");
@@ -338,25 +361,26 @@ function renderList() {
     
     const currentOrderClass = orderStatuses[o.status] ? orderStatuses[o.status][1] : "s-new";
     const currentPayClass = paymentStatuses[o.paymentStatus] ? paymentStatuses[o.paymentStatus][1] : "p-pending";
+    const stClass = orderStatuses[o.status] ? o.status : "new";
+    const receipt = (typeof o.receipt === "string" && o.receipt.startsWith("data:image/")) ? o.receipt : "";
 
     return `
-      <div class="order-card">
+      <div class="order-card st-${stClass}">
         <div class="order-header">
-          <!-- التعديل هنا: عرض رقم الطلب بكلمة "رقم الطلب" وآخر 4 حروف -->
           <div class="order-id">
             <span style="font-size:13px; color:#7a6650; font-family:'Tajawal', sans-serif;">رقم الطلب:</span>
-            <span>#${o.id.slice(-4).toUpperCase()}</span>
+            <span>#${esc(o.id.slice(-4).toUpperCase())}</span>
           </div>
           <div class="order-date">📅 ${dateStr} — 🕒 ${timeStr}</div>
         </div>
         <div class="order-body">
           <div>
             <table class="data-table">
-              <tr><th>اسم العميل</th><td>${o.customerName || "-"}</td></tr>
-              <tr><th>رقم الهاتف</th><td class="phone-val">${o.phone || "-"}</td></tr>
-              <tr><th>المحافظة</th><td>${o.city || "-"}</td></tr>
-              <tr><th>العنوان بالتفصيل</th><td style="font-size:13px">${o.address || "-"}</td></tr>
-              <tr><th>طريقة الدفع</th><td>${o.paymentMethod || "-"}</td></tr>
+              <tr><th>اسم العميل</th><td>${esc(o.customerName) || "-"}</td></tr>
+              <tr><th>رقم الهاتف</th><td class="phone-val">${esc(o.phone) || "-"}</td></tr>
+              <tr><th>المحافظة</th><td>${esc(o.city) || "-"}</td></tr>
+              <tr><th>العنوان بالتفصيل</th><td style="font-size:13px">${esc(o.address) || "-"}</td></tr>
+              <tr><th>طريقة الدفع</th><td>${esc(o.paymentMethod) || "-"}</td></tr>
               <tr><th>الإجمالي</th><td class="total-val">${Number(o.total).toLocaleString("ar-EG")} جنيه</td></tr>
             </table>
             
@@ -387,15 +411,56 @@ function renderList() {
               <h4>🛍️ المنتجات المطلوبة</h4>
               ${itemsHtml}
             </div>
+            <div class="receipt-box">
+              <h4>🧾 إيصال التحويل</h4>
+              ${receipt
+                ? `<img src="${esc(receipt)}" class="receipt-thumb" onclick="viewReceipt('${o.id}')" alt="إيصال">`
+                : `<div class="no-receipt">⚠️ لم يتم رفع إيصال</div>`}
+            </div>
           </div>
         </div>
         <div class="order-footer">
+          <button class="btn-wa" onclick="sendWhatsApp('${o.id}')">💬 إرسال الحالة للزبون</button>
           <button class="btn-delete" onclick="deleteOrder('${o.id}')">🗑️ حذف الطلب</button>
         </div>
       </div>
     `;
   }).join("");
 }
+
+window.viewReceipt = function(id) {
+  const o = allOrders.find(x => x.id === id);
+  if (!o || typeof o.receipt !== "string" || !o.receipt.startsWith("data:image/")) return;
+  $("#receiptBig").src = o.receipt;
+  $("#receiptModal").classList.add("open");
+};
+
+window.sendWhatsApp = function(id) {
+  const o = allOrders.find(x => x.id === id);
+  if (!o) return;
+  let ph = String(o.phone || "").replace(/\D/g, "");
+  if (ph.startsWith("00")) ph = ph.slice(2);
+  else if (ph.startsWith("0")) ph = "20" + ph.slice(1);
+  if (!ph) return alert("رقم الهاتف غير صالح");
+
+  const st = { new: "جديد 🆕", processing: "قيد التجهيز ⚙️", shipped: "تم الشحن 🚚", delivered: "تم التسليم ✅", cancelled: "ملغي ❌" };
+  const pay = {
+    pending: "قيد المراجعة ⏳",
+    paid: "تم قبول التحويل ✅",
+    rejected: "تم رفض الإيصال ❌ (يرجى التواصل معنا أو إعادة إرسال إيصال واضح)"
+  };
+  const msg =
+`مرحباً ${o.customerName || ""} 👋
+معك عيال علي فارم 🌾
+
+رقم طلبك: #${o.id.slice(-4).toUpperCase()}
+حالة الطلب: ${st[o.status] || "-"}
+حالة الدفع: ${pay[o.paymentStatus] || "-"}
+الإجمالي: ${Number(o.total).toLocaleString("ar-EG")} جنيه
+
+شكراً لثقتك بنا 🙏`;
+  window.open(`https://wa.me/${ph}?text=${encodeURIComponent(msg)}`, "_blank");
+};
 
 window.updateOrderStatus = async function(id, selectEl) {
   const newStatus = selectEl.value;
@@ -407,6 +472,7 @@ window.updateOrderStatus = async function(id, selectEl) {
     const o = allOrders.find(x => x.id === id);
     if (o) o.status = newStatus;
     renderStats();
+    renderList();
   } catch (e) {
     alert("فشل تحديث حالة الطلب: " + e.message);
   }
@@ -459,7 +525,7 @@ async function loadProducts() {
 function renderProducts() {
   const q = $("#searchProd").value.trim().toLowerCase();
   let rows = allProducts;
-  if (q) rows = rows.filter(p => p.name.toLowerCase().includes(q));
+  if (q) rows = rows.filter(p => (p.name || "").toLowerCase().includes(q));
 
   if (rows.length === 0) {
     $("#prodList").className = "empty";
@@ -471,17 +537,17 @@ function renderProducts() {
   $("#prodList").innerHTML = rows.map(p => `
     <div class="product-card">
       <div class="product-img-wrap">
-        <img src="${p.img}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+        <img src="${esc(p.img)}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
       </div>
       <div class="product-info">
-        <div class="product-cat">${p.cat || 'غير مصنف'}</div>
-        <div class="product-title">${p.name}</div>
+        <div class="product-cat">${esc(p.cat) || 'غير مصنف'}</div>
+        <div class="product-title">${esc(p.name)}</div>
         <div class="product-price">${Number(p.price).toLocaleString("ar-EG")} ج.م</div>
         <div style="font-size:12px;color:${p.stock ? '#16a34a' : '#dc2626'}; font-weight:800; margin-bottom:8px;">
           ${p.stock ? '✅ متوفر' : '❌ غير متوفر'}
         </div>
         <div class="product-actions">
-          <button class="btn-edit" onclick='openEditModal(${JSON.stringify(p)})'>✏️ تعديل</button>
+          <button class="btn-edit" onclick="openEditModal('${p.id}')">✏️ تعديل</button>
           <button class="btn-delete-prod" onclick="deleteProduct('${p.id}')">🗑️ حذف</button>
         </div>
       </div>
@@ -496,7 +562,9 @@ window.openAddModal = function() {
   $("#prodModal").classList.add("open");
 };
 
-window.openEditModal = function(p) {
+window.openEditModal = function(id) {
+  const p = allProducts.find(x => x.id === id);
+  if (!p) return;
   $("#modalTitle").textContent = "تعديل المنتج";
   $("#prodId").value = p.id;
   $("#prodName").value = p.name;

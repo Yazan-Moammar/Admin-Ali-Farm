@@ -153,6 +153,7 @@ header.bar button{width:auto;background:#3b2818;padding:10px 20px;font-size:14px
         <option value="cancelled">ملغي</option>
       </select>
       <button id="refresh">🔄 تحديث</button>
+      <button id="exportPdf" style="background:#b91c1c;">📄 تصدير الطلبات PDF</button>
     </div>
     <div id="list" class="loading">جارٍ التحميل...</div>
   </div>
@@ -502,6 +503,114 @@ window.deleteOrder = async function(id) {
   } catch (e) {
     alert("فشل حذف الطلب: " + e.message);
   }
+};
+
+// ========== تصدير الطلبات إلى PDF ==========
+const ST_LABELS = { new: "جديد", processing: "قيد التجهيز", shipped: "تم الشحن", delivered: "تم التسليم", cancelled: "ملغي" };
+const PAY_LABELS = { pending: "بانتظار الدفع", paid: "مدفوع", rejected: "مرفوض" };
+
+// الطلبات الظاهرة حالياً حسب البحث والفلتر
+function getVisibleOrders() {
+  const q = $("#search").value.trim().toLowerCase();
+  const f = $("#filter").value;
+  let rows = allOrders;
+  if (f) rows = rows.filter(o => o.status === f);
+  if (q) rows = rows.filter(o =>
+    (o.customerName || "").toLowerCase().includes(q) ||
+    (o.phone || "").includes(q) ||
+    o.id.toLowerCase().includes(q));
+  return rows;
+}
+
+const fmtDateTime = d => d.toLocaleString("ar-EG", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" });
+
+$("#exportPdf").onclick = () => {
+  const rows = getVisibleOrders();
+  if (!rows.length) return alert("لا توجد طلبات للتصدير");
+  const f = $("#filter").value;
+  const filterName = f ? ST_LABELS[f] : "كل الطلبات";
+  const sum = rows.filter(o => o.status !== "cancelled").reduce((s, o) => s + (Number(o.total) || 0), 0);
+  const exportDate = fmtDateTime(new Date());
+
+  const blocks = rows.map((o, i) => {
+    const receipt = (typeof o.receipt === "string" && o.receipt.startsWith("data:image/")) ? o.receipt : "";
+    const items = (o.items || []).map(x =>
+      `<tr><td>${esc(x.name)}</td><td>× ${esc(x.qty)}</td><td>${((Number(x.price) || 0) * (Number(x.qty) || 0)).toLocaleString("ar-EG")} ج.م</td></tr>`
+    ).join("");
+    return `
+    <div class="order">
+      <div class="o-head">
+        <span>${i + 1}. طلب رقم #${esc(o.id.slice(-4).toUpperCase())}</span>
+        <span>تاريخ الطلب: ${fmtDateTime(o._date)}</span>
+      </div>
+      <div class="o-body">
+        <div class="o-info">
+          <table class="kv">
+            <tr><th>الاسم</th><td>${esc(o.customerName) || "-"}</td></tr>
+            <tr><th>الهاتف</th><td dir="ltr" style="text-align:right">${esc(o.phone) || "-"}</td></tr>
+            <tr><th>المحافظة</th><td>${esc(o.city) || "-"}</td></tr>
+            <tr><th>العنوان</th><td>${esc(o.address) || "-"}</td></tr>
+            <tr><th>طريقة الدفع</th><td>${esc(o.paymentMethod) || "-"}</td></tr>
+            <tr><th>حالة الطلب</th><td>${ST_LABELS[o.status] || "-"}</td></tr>
+            <tr><th>حالة الدفع</th><td>${PAY_LABELS[o.paymentStatus] || "-"}</td></tr>
+          </table>
+          <table class="items">
+            <thead><tr><th>المنتج</th><th>الكمية</th><th>السعر</th></tr></thead>
+            <tbody>${items}</tbody>
+          </table>
+          <div class="o-total">الإجمالي: ${(Number(o.total) || 0).toLocaleString("ar-EG")} جنيه</div>
+        </div>
+        <div class="o-receipt">
+          <div class="r-title">إيصال التحويل</div>
+          ${receipt ? `<img src="${esc(receipt)}" alt="إيصال">` : `<div class="no-r">لم يتم رفع إيصال</div>`}
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+
+  const html = `<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8">
+  <title>تقرير الطلبات - عيال علي فارم</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    @page { size: A4 portrait; margin: 10mm; }
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { font-family: 'Tajawal', sans-serif; color: #222; font-size: 12px; margin: 0; }
+    h1 { font-size: 20px; margin: 0 0 4px; color: #4a2e18; }
+    .meta { margin-bottom: 14px; color: #555; font-weight: 700; line-height: 1.8; border-bottom: 2px solid #4a2e18; padding-bottom: 8px; }
+    .order { border: 1.5px solid #c9b27c; border-radius: 8px; margin-bottom: 12px; overflow: hidden; page-break-inside: avoid; break-inside: avoid; }
+    .o-head { background: #4a2e18; color: #fff; padding: 7px 10px; display: flex; justify-content: space-between; font-weight: 800; font-size: 12px; }
+    .o-body { display: flex; gap: 10px; padding: 10px; }
+    .o-info { flex: 1.3; }
+    .o-receipt { flex: 1; text-align: center; border: 1.5px dashed #c9b27c; border-radius: 6px; padding: 6px; background: #fffdf8; }
+    .o-receipt img { max-width: 100%; max-height: 230px; object-fit: contain; border-radius: 4px; }
+    .r-title { font-weight: 800; color: #6b4423; margin-bottom: 6px; font-size: 11px; }
+    .no-r { color: #b91c1c; font-weight: 800; padding: 30px 0; font-size: 11px; }
+    table { width: 100%; border-collapse: collapse; }
+    .kv th { background: #f6efdc; width: 28%; text-align: right; padding: 4px 6px; border: 1px solid #e2d4b7; font-size: 11px; }
+    .kv td { padding: 4px 6px; border: 1px solid #e2d4b7; font-weight: 700; }
+    .items { margin-top: 8px; }
+    .items th { background: #6b4423; color: #fff; padding: 4px 6px; font-size: 11px; text-align: right; }
+    .items td { border: 1px solid #e2d4b7; padding: 4px 6px; }
+    .o-total { margin-top: 8px; font-weight: 800; font-size: 13px; color: #15803d; }
+    .grand { margin-top: 14px; font-size: 15px; font-weight: 800; border-top: 2px solid #4a2e18; padding-top: 8px; }
+  </style></head><body>
+    <h1>تقرير الطلبات - عيال علي فارم</h1>
+    <div class="meta">
+      الفلتر: ${filterName} | عدد الطلبات: ${rows.length}<br>
+      تاريخ التصدير: ${exportDate}
+    </div>
+    ${blocks}
+    <div class="grand">إجمالي المبيعات (بدون الملغي): ${sum.toLocaleString("ar-EG")} جنيه</div>
+  </body></html>`;
+
+  const w = window.open("", "_blank");
+  if (!w) return alert("اسمح بالنوافذ المنبثقة لهذا الموقع ثم أعد المحاولة");
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+  const waitFonts = w.document.fonts?.ready || Promise.resolve();
+  const waitImgs = Promise.all([...w.document.images].map(im => im.decode ? im.decode().catch(() => {}) : Promise.resolve()));
+  Promise.all([waitFonts, waitImgs]).then(() => setTimeout(() => { w.focus(); w.print(); }, 400));
 };
 
 $("#search").oninput = renderList;
